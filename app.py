@@ -28,11 +28,11 @@ fig.update_layout(
 app.layout = html.Div(
     style={'backgroundColor': colors['background']}, 
     children=[
-    html.H1("Testing Dash Demo",
+    html.H1("Hello cow. Look at what I made",
             style={
             'textAlign': 'center',
             'color': colors['text']}),
-    html.Div(children='Dash: A web application framework for Python.', style={
+    html.Div(children='I am testing deploying my first web app.', style={
         'textAlign': 'center',
         'color': colors['text']
     }),
