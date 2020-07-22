@@ -26,7 +26,8 @@ fig.update_layout(
     font_color=colors['text'])
 
 app.layout = html.Div(
-    style={'backgroundColor': colors['background']}, children=[
+    style={'backgroundColor': colors['background']}, 
+    children=[
     html.H1("Testing Dash Demo",
             style={
             'textAlign': 'center',
@@ -37,16 +38,5 @@ app.layout = html.Div(
     }),
 
     dcc.Graph(id='testing_graph', figure=fig)
-#     html.Label([
-#         "colorscale",
-#         dcc.Dropdown(
-#             id='colorscale-dropdown', clearable=False,
-#             value='plasma', options=[
-#                 {'label': c, 'value': c}
-#                 for c in px.colors.named_colorscales()
-#             ])
-    #]),
-])
+    ])
 
-# Run app and display result inline in the notebook
-app.run_server(debug=True)
