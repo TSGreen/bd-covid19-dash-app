@@ -12,6 +12,7 @@ df_districts_cv19_pop.rename(columns = dict(zip(df_districts_cv19_pop.columns, [
        'ADM0_PCODE', 'date', 'validOn', 'ValidTo', 'Division', 'Total Cases',
        'Log(Cases)', 'Abbr.', 'Status', 'Native', 'Adm.', 'Area', 'Population_1991',
        'Population_2001', 'Population_2011', 'Population_2016', 'Cases Per Thousand', 'geometry'])), inplace=True)
+df_districts_cv19_pop['Population (Millions)']=df_districts_cv19_pop['Population_2016']/1E6
 # Build App
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -36,7 +37,7 @@ fig = px.choropleth_mapbox(df_districts_cv19_pop, geojson=df_districts_cv19_pop,
 fig_density = px.choropleth_mapbox(df_districts_cv19_pop, geojson=df_districts_cv19_pop,
                            locations='District', color='Cases Per Thousand',
                            hover_name='District',
-                           hover_data={'Cases Per Thousand':True, 'Total Cases':True, 'Population_2016':True, 'Log(Cases)':False, 'District':False} ,
+                           hover_data={'Cases Per Thousand':True, 'Total Cases':True, 'Population (Millions)':True, 'Log(Cases)':False, 'District':False} ,
                            center={"lat": 23.7, "lon": 90.2},
                            featureidkey='properties.District',
                            mapbox_style="carto-positron", 
@@ -65,7 +66,7 @@ app.layout = html.Div(
             style={
             'textAlign': 'center',
             'color': colors['text']}),
-    html.Div(children='An interactive exploration of Covid-19 data for Bangladesh. Hover over a district to see number of confirmed cases. (Data true as of July 18, 2020.', style={
+    html.Div(children='An interactive exploration of Covid-19 data for Bangladesh. Hover over a district to see number of confirmed cases. (Data true as of July 23, 2020).', style={
         'textAlign': 'center',
         'color': colors['text']
     }),
