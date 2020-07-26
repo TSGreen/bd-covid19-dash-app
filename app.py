@@ -28,7 +28,7 @@ fig = px.choropleth_mapbox(df_districts_cv19_pop, geojson=df_districts_cv19_pop,
                            featureidkey='properties.District',
                            mapbox_style="carto-positron",
                            zoom=6,
-                          height=800, width=650,
+                          height=800, 
                            opacity=0.7,
                           title='Confirmed cases per district',
                           color_continuous_scale='OrRd',
@@ -42,11 +42,12 @@ fig_density = px.choropleth_mapbox(df_districts_cv19_pop, geojson=df_districts_c
                            featureidkey='properties.District',
                            mapbox_style="carto-positron", 
                            zoom=6,
-                          height=800, width=650,
+                          height=800, 
                            opacity=0.7,
                           title='Confirmed cases per thousdand people per district',
                           color_continuous_scale='OrRd',
                           range_color=[0,4])
+
 
 fig.update_layout(
     plot_bgcolor=colors['background'],
@@ -60,18 +61,44 @@ fig_density.update_layout(
 
 server = app.server
 
+table_contents = '''
+1. Map of [confirmed cases per district.](#district-cases)
+2. Map of [confirmed cases per thousdand people.](#district-cases_pt)
+'''
+
+introduction = '''
+An interactive exploration of Covid-19 data for Bangladesh.
+
+Data source: [IEDCR](https://iedcr.gov.bd/).
+Data on this page last updated: 23 July 2020.
+'''
+
+top = '''
+[(top)](#top)'''
+
 app.layout = html.Div(
     style={'backgroundColor': colors['background']}, children=[
     html.H1("Bangladesh Covid-19 Data",
             style={
             'textAlign': 'center',
             'color': colors['text']}),
-    html.Div(children='An interactive exploration of Covid-19 data for Bangladesh. Hover over a district to see number of confirmed cases. (Data true as of July 23, 2020).', style={
+    html.Div([dcc.Markdown(children=introduction)], 
+             style={
         'textAlign': 'center',
+        #'font_size': '20vw',
         'color': colors['text']
     }),
-    dcc.Graph(id='district-cases', figure=fig),
-    dcc.Graph(id='district-cases_pt', figure=fig_density)
+    html.Div(children=[dcc.Markdown(children=table_contents)], id='top', style={
+        'textAlign': 'left',
+        'color': colors['text']
+    }),
+    
+        
+    dcc.Graph(id='district-cases', figure=fig, style={'width':'90vw'}),
+    html.Div([dcc.Markdown(children=top)]),
+        
+    dcc.Graph(id='district-cases_pt', figure=fig_density, style={'width':'90vw'}),
+    html.Div([dcc.Markdown(children=top)]),       
 ])
 
 #app.run_server(debug=True)
