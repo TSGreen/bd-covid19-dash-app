@@ -7,12 +7,16 @@ import geopandas as gpd
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 df_districts_cv19_pop = gpd.read_file('./data/data.shp')
-df_districts_cv19_pop.rename(columns = dict(zip(df_districts_cv19_pop.columns, ['Shape_Length', 'Shape_Area', 'District', 'ADM2_PCODE', 'ADM2_REF',
+df_districts_cv19_pop.rename(columns=dict(zip(df_districts_cv19_pop.columns, 
+       ['Shape_Length', 'Shape_Area', 'District', 'ADM2_PCODE', 'ADM2_REF',
        'ADM2ALT1EN', 'ADM2ALT2EN', 'ADM1_EN', 'ADM1_PCODE', 'ADM0_EN',
-       'ADM0_PCODE', 'date', 'validOn', 'ValidTo', 'Division', 'Total Cases',
-       'Log(Cases)', 'Abbr.', 'Status', 'Native', 'Adm.', 'Area', 'Population_1991',
-       'Population_2001', 'Population_2011', 'Population_2016', 'Cases Per Thousand', 'geometry'])), inplace=True)
+       'ADM0_PCODE', 'date', 'validOn', 'ValidTo', 'Division', 'Updated Date', 
+       'Total Cases', 'Divisional Cases', 'Log(Cases)', 'Abbr.', 'Status', 
+       'Native', 'Adm.', 'Area', 'Population_1991', 'Population_2001', 'Population_2011',
+       'Population_2016', 'Cases Per Thousand', 'geometry'])), inplace=True)
 df_districts_cv19_pop['Population (Millions)']=df_districts_cv19_pop['Population_2016']/1E6
+
+
 # Build App
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -32,7 +36,7 @@ fig = px.choropleth_mapbox(df_districts_cv19_pop, geojson=df_districts_cv19_pop,
                            opacity=0.7,
                           title='Confirmed cases per district',
                           color_continuous_scale='OrRd',
-                          range_color=[1,5])
+                          range_color=[1, 5])
 
 fig_density = px.choropleth_mapbox(df_districts_cv19_pop, geojson=df_districts_cv19_pop,
                            locations='District', color='Cases Per Thousand',
@@ -46,7 +50,7 @@ fig_density = px.choropleth_mapbox(df_districts_cv19_pop, geojson=df_districts_c
                            opacity=0.7,
                           title='Confirmed cases per thousdand people per district',
                           color_continuous_scale='OrRd',
-                          range_color=[0,4])
+                          range_color=[0, 5])
 
 
 fig.update_layout(
@@ -70,7 +74,7 @@ introduction = '''
 An interactive exploration of Covid-19 data for Bangladesh.
 
 Data source: [IEDCR](https://iedcr.gov.bd/).
-Data on this page last updated: 23 July 2020.
+Data on this page last updated: 12 August 2020.
 '''
 
 top = '''
