@@ -74,7 +74,7 @@ introduction = '''
 An interactive exploration of Covid-19 data for Bangladesh.
 
 Data source: [IEDCR](https://iedcr.gov.bd/).
-Data on this page last updated: 12 August 2020.
+Data on this page last updated: 18 August 2020.
 '''
 
 top = '''
