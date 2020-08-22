@@ -74,7 +74,7 @@ fig_daily.update_layout(
     barmode='overlay',
     hovermode='x unified',
     title='Daily Cases, Tests, Deaths and Recoveries',
-    xaxis_title='Number',
+    xaxis_title='Date',
     plot_bgcolor=colors['background'],
     paper_bgcolor=colors['background'],
     font_color=colors['text'],
