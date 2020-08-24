@@ -189,12 +189,12 @@ introduction = '''
 An interactive exploration of Covid-19 data for Bangladesh.
 
 Data source: [IEDCR](https://iedcr.gov.bd/).
-Data on this page last updated: 22 August 2020.
+Data on this page last updated: 23 August 2020.
 '''
 
 credit = '''
-Page built by [Timothy Green](htps://github.com/TSGreen). 
-[Source code](https://github.com/TSGreen/bd-covid19-dash-app)
+Page built in Python by [Timothy Green](https://github.com/TSGreen). 
+[Source code](https://github.com/TSGreen/bd-covid19-dash-app).
 '''
 
 top = '''
