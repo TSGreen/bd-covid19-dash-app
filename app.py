@@ -192,25 +192,31 @@ Data source: [IEDCR](https://iedcr.gov.bd/).
 Data on this page last updated: 22 August 2020.
 '''
 
+credit = '''
+Page built by [Timothy Green](htps://github.com/TSGreen). 
+[Source code](https://github.com/TSGreen/bd-covid19-dash-app)
+'''
+
 top = '''
 [(top)](#top)'''
 
 app.layout = html.Div(
-    style={'backgroundColor': colors['background']}, children=[
+    style={'backgroundColor': colors['background']}, 
+    children=[
     html.H1("Bangladesh Covid-19 Data",
             style={
             'textAlign': 'center',
             'color': colors['text']}),
+           
     html.Div([dcc.Markdown(children=introduction)], 
              style={
         'textAlign': 'center',
-        #'font_size': '20vw',
-        'color': colors['text']
-    }),
+        'color': colors['text']}),
+           
     html.Div(children=[dcc.Markdown(children=table_contents)], id='top', style={
         'textAlign': 'left',
-        'color': colors['text']
-    }),
+        'color': colors['text']}),
+           
     dcc.Graph(id='daily-data-graph', figure=fig_daily, style={'width':'90vw'}),
     html.Div([dcc.Markdown(children=top)]),
         
@@ -218,7 +224,11 @@ app.layout = html.Div(
     html.Div([dcc.Markdown(children=top)]),
         
     dcc.Graph(id='district-cases_pt', figure=fig_density, style={'width':'90vw'}),
-    html.Div([dcc.Markdown(children=top)]),       
+    html.Div([dcc.Markdown(children=top)]),    
+    
+    html.Div([dcc.Markdown(children=credit)], 
+       style={'textAlign': 'center',
+              'color': colors['text']}),
 ])
 
 #app.run_server(debug=True, port=8090)
