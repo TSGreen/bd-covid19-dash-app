@@ -1,15 +1,13 @@
-all:
-	@echo "Doing all"
+all: scrape deploy
 
 scrape:
 	@echo "Scraping latest data"
-	@python 
+	@python scrape_timeseries_data.py
+	@python scrape_district_data.py 
 
 deploy:
-	@echo "Pushing to production"
-	@git push git@example.com:~/testapp master
+	@echo "Pushing to GitHub"
+	@git add --all
+	@git commit -m "Data update"
+	@git push
 
-update:
-	@echo "Makefile: Doing UPDATE stuff like grunt, gulp, rake,..."
-	@whoami
-	@pwd
