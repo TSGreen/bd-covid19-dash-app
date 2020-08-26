@@ -1,4 +1,5 @@
-"""
+
+C"""
 
 Build dash app of COVID-19 data in Bangladesh.
 
@@ -48,7 +49,7 @@ fig_daily = go.Figure()
 fig_daily.add_trace(go.Bar(x=df['Date'], y=df['Newly Tested'], name='Daily Tests',
                          marker_color='rgb(49,130,189)',    
                          hovertemplate = hoverform))
-fig_daily.add_trace(go.Scatter(x=df['Date'], y=df['Daily Tests SMA7'], name='Daily Tests (7-day rolling avg)',
+fig_daily.add_trace(go.Scatter(x=df['Date'], y=df['Daily Tests SMA7'], name='Daily Tests \n(7-day rolling avg)',
                          line=dict(color='rgb(49,130,189)', width=3), visible='legendonly', 
                          hovertemplate = hoverform))
 
@@ -189,7 +190,7 @@ introduction = '''
 An interactive exploration of Covid-19 data for Bangladesh.
 
 Data source: [IEDCR](https://iedcr.gov.bd/).
-Data on this page last updated: 25 August 2020.
+Data on this page last updated: 26 August 2020.
 '''
 
 credit = '''
