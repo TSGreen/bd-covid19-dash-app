@@ -8,7 +8,7 @@ scrape:
 
 	
 process:
-	@echo "Processign raw data ..." 
+	@echo "Processing raw data ..." 
 	@python process_national_tsdata.py
 	@python process_regionaldata.py
 	@echo "Data processed."
