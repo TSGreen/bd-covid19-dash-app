@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sun Aug  9 21:52:44 2020
+Scrape the regional COVID-19 data from the online IEDCR Google sheet.
+
+Save two identical files: one dated for archive and one called "latest" for
+processing.
 
 @author: tim
 """
@@ -22,8 +25,8 @@ df = pd.read_html(data_table.extract_first())[0]
 
 today = date.today()
 
-datedfile = Path.cwd().joinpath('data', 'district-wise', f'DistrictWise_Distribution_{today.month}-{today.day}.csv')
+datedfile = Path.cwd().joinpath('data', 'raw', f'regional_covid19_data_{today.month}-{today.day}.csv')
 df.to_csv(datedfile)
 
-latestfile = Path.cwd().joinpath('data', 'district-wise', f'DistrictWise_Distribution_Latest.csv')
+latestfile = Path.cwd().joinpath('data', 'raw', f'regional_covid19_data_latest.csv')
 df.to_csv(latestfile)
