@@ -338,4 +338,4 @@ app.layout = html.Div(
     html.Div([dcc.Markdown(children=credit)], style=center_text),
     ])
 
-app.run_server(debug=True, port=8095)
+#app.run_server(debug=True, port=8095)
