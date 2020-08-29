@@ -25,7 +25,7 @@ df = pd.read_html(data_table.extract_first())[0]
 
 today = date.today()
 
-datedfile = Path.cwd().joinpath('data', 'raw', f'regional_covid19_data_{today.month}-{today.day}.csv')
+datedfile = Path.cwd().joinpath('data', 'raw', f'regional_covid19_data_{today}.csv')
 df.to_csv(datedfile)
 
 latestfile = Path.cwd().joinpath('data', 'raw', f'regional_covid19_data_latest.csv')
