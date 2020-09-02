@@ -1,4 +1,3 @@
-
 """
 
 Build Dash app of COVID-19 data in Bangladesh. 
@@ -12,9 +11,10 @@ To be deployed to GitHub and Heroku.
 """
 
 import plotly.express as px
+import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import dash
+from dash.dependencies import Input, Output
 import geopandas as gpd
 import pandas as pd
 import plotly.graph_objects as go
@@ -43,8 +43,11 @@ national_data = Path.cwd().joinpath('data', 'processed', 'national_data.csv')
 df = pd.read_csv(national_data)
 df.Date = pd.to_datetime(df.Date)
 
-# Build App
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__,
+                external_stylesheets=external_stylesheets)
+
+app.config.suppress_callback_exceptions = True
+
 
 hoverform = "%{y:,.0f}"
 
@@ -96,8 +99,7 @@ fig_daily.update_layout(
     font_color=colors['text'],
     height=750,
     updatemenus=[
-        dict(
-            type="buttons",
+        dict(type="buttons",
             direction="left",
             active=0,
             x=0.7,
@@ -106,43 +108,36 @@ fig_daily.update_layout(
                 dict(label="All",
                      method="update",
                      args=[{"visible": [True, True, True, True, True, True, True, True]},
-                           {"title": "Daily Cases, Tests, Deaths and Recoveries"}
-                          ]),
+                           {"title": "Daily Cases, Tests, Deaths and Recoveries"}]),
                 dict(label="Tests",
                      method="update",
                      args=[{"visible": [True, True, False, False, False, False, False, False]},
-                           {"title": "Tests"}
-                            ]),
+                           {"title": "Tests"}]),
                 dict(label="Cases",
                      method="update",
                      args=[{"visible": [False, False, True, True, False, False, False, False]},
-                           {"title": "Cases"}
-                            ]),
+                           {"title": "Cases"}]),
                 dict(label="Recoveries",
                      method="update",
                      args=[{"visible": [False, False, False, False, True, True, False, False]},
-                           {"title": "Recoveries"}
-                            ]),
+                           {"title": "Recoveries"}]),
                 dict(label="Deaths",
                      method="update",
                      args=[{"visible": [False, False, False, False, False, False, True, True]},
-                           {"title": "Deaths"}
-                            ]),
+                           {"title": "Deaths"}]),
                 dict(label="Bars Only",
                      method="update",
                      args=[{"visible": [True, False, True, False, True, False, True, False]},
-                           {"title": "Daily Cases, Tests, Deaths and Recoveries"}
-                            ]),
+                           {"title": "Daily Cases, Tests, Deaths and Recoveries"}]),
                  dict(label="Lines Only",
                      method="update",
                      args=[{"visible": [False, True, False, True, False, True, False, True]},
-                           {"title": "Daily Cases, Tests, Deaths and Recoveries"}
-                            ]),
-            ]),
-        )
+                           {"title": "Daily Cases, Tests, Deaths and Recoveries"}]),
+                          ]),
+            )
     ])
 
-fig_daily.update_xaxes(#rangeslider_visible=True,
+fig_daily.update_xaxes(
         rangeselector=dict(
         buttons=list([
             dict(count=1, label="1m", step="month", stepmode="backward"),
@@ -155,12 +150,6 @@ fig_daily.update_xaxes(#rangeslider_visible=True,
 
 lines = go.Figure()
 
-# lines.add_trace(go.Scatter(
-#     x=[None], y=[None],
-#     name='<b>Click to hide/show:</b>',
-#     line={'color': 'rgba(0, 0, 0, 0)'}
-# ))
-
 def plot_totalparameter(parameter, colour):
 
     lines.add_trace(go.Scatter(x=df['Date'], 
@@ -168,122 +157,8 @@ def plot_totalparameter(parameter, colour):
                                    name=parameter,
                                    line=dict(color=colour, width=3),
                                    hovertemplate = hoverform))
-
-plot_totalparameter('Total Tested', 'rgb(49,130,189)')
-plot_totalparameter('Total Cases', 'green')
-plot_totalparameter('Total Recovered', 'rgb(235,186,20)')
-plot_totalparameter('Total Deaths', 'firebrick')
-
-
-lines.update_layout(
-    legend_title_text='<b>Click to hide/show:</b><br>',
-    hovermode='x unified',
-    title='Total Cumulative Cases, Tests, Deaths and Recoveries',
-    xaxis_title='Date',
-    plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
-    font_color=colors['text'],
-    height=750,
-    updatemenus=[
-        dict(
-            type="buttons",
-            direction="left",
-            active=0,
-            x=0.7,
-            y=1.2,
-            buttons=list([
-                dict(label="All",
-                     method="update",
-                     args=[{"visible": [True, True, True, True]},
-                           {"title": "Total Cumulative Cases, Tests, Deaths and Recoveries"}
-                          ]),
-                dict(label="Tests",
-                     method="update",
-                     args=[{"visible": [True, False, False, False]},
-                           {"title": "Total Tests"}
-                            ]),
-                dict(label="Cases",
-                     method="update",
-                     args=[{"visible": [False, True, False, False]},
-                           {"title": "Cases"}
-                            ]),
-                dict(label="Recoveries",
-                     method="update",
-                     args=[{"visible": [False, False, True, False]},
-                           {"title": "Recoveries"}
-                            ]),
-                dict(label="Deaths",
-                     method="update",
-                     args=[{"visible": [False, False, False, True]},
-                           {"title": "Deaths"}
-                            ]),
-            ]),
-        )
-    ])
-
-lines.update_xaxes(#rangeslider_visible=True,
-        rangeselector=dict(
-        buttons=list([
-            dict(count=1, label="1m", step="month", stepmode="backward"),
-            dict(count=2, label="2m", step="month", stepmode="backward"),
-            dict(count=3, label="3m", step="month", stepmode="backward"),
-            dict(count=6, label="6m", step="month", stepmode="backward"),
-            dict(step="all")
-        ])
-    ))
-
-
-##############################################################################
-################          Maps                   #############################
-##############################################################################
-
-fig = px.choropleth_mapbox(df_districts_cv19_pop, geojson=df_districts_cv19_pop,
-                           locations='District', color='Log(Cases)',
-                           hover_name='District',
-                           hover_data={'Total Cases': True, 'Cases percent': True, 'Log(Cases)': False, 'District': False},
-                           center={"lat": 23.7, "lon": 90.2},
-                           featureidkey='properties.District',
-                           mapbox_style="carto-positron",
-                           zoom=6,
-                           height=800,
-                           opacity=0.7,
-                           title='Confirmed cases per district',
-                           color_continuous_scale='OrRd',
-                           range_color=[1, 5])
-
-fig_density = px.choropleth_mapbox(df_districts_cv19_pop, geojson=df_districts_cv19_pop,
-                           locations='District', color='Cases Per Thousand',
-                           hover_name='District',
-                           hover_data={'Cases Per Thousand':True, 'Total Cases':True, 'Population (Millions)':True, 'Log(Cases)':False, 'District':False},
-                           center={"lat": 23.7, "lon": 90.2},
-                           featureidkey='properties.District',
-                           mapbox_style="carto-positron",
-                           zoom=6,
-                           height=800,
-                           opacity=0.7,
-                           title='Confirmed cases per thousdand people per district',
-                           color_continuous_scale='OrRd',
-                           range_color=[0, 5])
-
-
-fig.update_layout(
-    plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
-    font_color=colors['text'])
-
-fig_density.update_layout(
-    plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
-    font_color=colors['text'])
-
+    
 server = app.server
-
-table_contents = '''
-1. Chart of [daily cases, tests, recoveries & deaths.](#daily-data-graph)
-2. Chart of [total cumulative cases, tests, recoveries & deaths.](#total-data-graph)
-3. Map of [confirmed cases per district.](#district-cases)
-4. Map of [confirmed cases per thousdand people.](#district-cases_pt)
-'''
 
 introduction = f'''
 An interactive exploration of Covid-19 data for Bangladesh.
@@ -301,41 +176,170 @@ The rate of testing declined almost immediately after the government annouced on
 * Significant drops in the daily figures were observed around 26 May 2020 and 2 August 2020 because of Eid ul-Fitr and Eid al-Adha respectively.
 * There is a spike in recoveries on 15 June due to a change in  reporting policy. The health ministry included recoveries at home (i.e. outside of hopsitals) from this date. 
 """
+
 credit = '''
 Page built in Python by [Timothy Green](https://github.com/TSGreen). 
 [Source code](https://github.com/TSGreen/bd-covid19-dash-app).
 '''
 
-top = '''
-[(top)](#top)'''
-
 center_text = {'textAlign': 'center', 'color': colors['text']}
-left_text = {'textAlign': 'left', 'color': colors['text']}
-       
+left_text = {'textAlign': 'left', 'color': colors['text']}       
+
 app.layout = html.Div(
     style={'backgroundColor': colors['background']},
     children=[
     html.H1("Bangladesh Covid-19 Data", style=center_text),
+    html.Div([dcc.Markdown(children=introduction)], style=center_text), 
+    dcc.Tabs(
+        id="tabs-with-classes",
+        value='tab-daily',
+        parent_className='custom-tabs',
+        className='custom-tabs-container',
+        children=[
+            dcc.Tab(
+                label='Daily Data',
+                value='tab-daily',
+                className='custom-tab',
+                selected_className='custom-tab--selected'
+            ),
+            dcc.Tab(
+                label='Cumulative Data',
+                value='tab-total',
+                className='custom-tab',
+                selected_className='custom-tab--selected'
+            ),
+            dcc.Tab(
+                label='Regional Data',
+                value='tab-regional', className='custom-tab',
+                selected_className='custom-tab--selected'
+            ),
+        ]),
+    html.Div(id='tabs-content-classes'),
+    html.Div([dcc.Markdown(children=credit)], style=center_text)
+])
 
-    html.Div([dcc.Markdown(children=introduction)], style=center_text),
+#  Controls the tabs at the top
+@app.callback(Output('tabs-content-classes', 'children'),
+              [Input('tabs-with-classes', 'value')],)
+def render_content(tab):
+    if tab == 'tab-daily':
+        return html.Div(style={'backgroundColor': colors['background']},
+            children=[
+            html.H3('Daily Data'),
+            dcc.Graph(id='daily-data-graph', figure=fig_daily, style={'width':'90vw'}),
+            html.Div([dcc.Markdown(children=daily_obs)], style=left_text),
+        ])
+    elif tab == 'tab-total':
+        return html.Div(style={'backgroundColor': colors['background']},
+            children=[
+            html.H3('Total Data'),
+            dcc.RadioItems(
+                    id='yaxis-scale',
+                    options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
+                    value='Linear',
+                    labelStyle={'display': 'inline-block'}, 
+                    style=center_text),
+            dcc.Graph(id='total-data-graph', style={'width':'90vw'}),
+                    ])
+    elif tab == 'tab-regional':
+        return html.Div(style={'backgroundColor': colors['background']},
+            children=[
+            html.H3('Regional Data'),
+            dcc.Dropdown(id='regional-feature',
+                        options=[{'label': i, 'value': j}
+                                  for i,j in [('District: Confirmed Cases', 'Log(Cases)'),
+                                              ('District: Cases Per Thousand','Cases Per Thousand')]],
+                        value='Log(Cases)',
+                        searchable=False, clearable=False,
+                        style=center_text),
+            dcc.Graph(id='district-cases', style={'width':'90vw'}),                        
+        ])
 
-    html.Div(children=[dcc.Markdown(children=table_contents)], id='top', 
-             style=left_text),
+#Create and update the cumulative national data plot
+@app.callback(Output('total-data-graph', 'figure'),
+              [Input('yaxis-scale', 'value')])
+def update_graph(yaxis_type):
+    lines.update_layout(
+        legend_title_text='<b>Click to hide/show:</b><br>',
+        hovermode='x unified',
+        title='Total Cumulative Cases, Tests, Deaths and Recoveries',
+        xaxis_title='Date',
+        plot_bgcolor=colors['background'],
+        paper_bgcolor=colors['background'],
+        font_color=colors['text'],
+        height=750,
+        updatemenus=[
+            dict(
+                type="buttons",
+                direction="left",
+                active=0,
+                x=0.7,
+                y=1.2,
+                buttons=list([
+                    dict(label="All",
+                          method="update",
+                          args=[{"visible": [True, True, True, True]},
+                                {"title": "Total Cumulative Cases, Tests, Deaths and Recoveries"}
+                              ]),
+                    dict(label="Tests",
+                          method="update",
+                          args=[{"visible": [True, False, False, False]},
+                                {"title": "Total Tests"}
+                                ]),
+                    dict(label="Cases",
+                          method="update",
+                          args=[{"visible": [False, True, False, False]},
+                                {"title": "Cases"}
+                                ]),
+                    dict(label="Recoveries",
+                          method="update",
+                          args=[{"visible": [False, False, True, False]},
+                                {"title": "Recoveries"}
+                                ]),
+                    dict(label="Deaths",
+                          method="update",
+                          args=[{"visible": [False, False, False, True]},
+                                {"title": "Deaths"}
+                                ]),
+                ]),
+            )
+        ])
+
+    lines.update_xaxes(
+            rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1m", step="month", stepmode="backward"),
+                dict(count=2, label="2m", step="month", stepmode="backward"),
+                dict(count=3, label="3m", step="month", stepmode="backward"),
+                dict(count=6, label="6m", step="month", stepmode="backward"),
+                dict(step="all")
+            ])
+        ))
+    lines.update_yaxes(type='linear' if yaxis_type == 'Linear' else 'log') 
+    return lines
     
-    dcc.Graph(id='daily-data-graph', figure=fig_daily, style={'width':'90vw'}),
-    html.Div([dcc.Markdown(children=daily_obs)], style=left_text),
-    html.Div([dcc.Markdown(children=top)]),
+#  Create and update the regional data visualisation map
+@app.callback(Output('district-cases', 'figure'),
+              [Input('regional-feature', 'value')])
+def update_graph(propertytoplot):
+    map_fig = px.choropleth_mapbox(df_districts_cv19_pop, geojson=df_districts_cv19_pop,
+                            locations='District', color=propertytoplot,
+                            hover_name='District',
+                            hover_data={'Total Cases': True, 'Cases percent': True, 'Log(Cases)': False, 'District': False},
+                            center={"lat": 23.7, "lon": 90.2},
+                            featureidkey='properties.District',
+                            mapbox_style="carto-positron",
+                            zoom=6,
+                            height=800,
+                            opacity=0.65,
+                            title=propertytoplot,
+                            color_continuous_scale='OrRd',
+                            range_color=[1, 5])
+    map_fig.update_layout(
+        plot_bgcolor=colors['background'],
+        paper_bgcolor=colors['background'],
+        font_color=colors['text'])
+    return map_fig
 
-    dcc.Graph(id='total-data-graph', figure=lines, style={'width':'90vw'}),
-    html.Div([dcc.Markdown(children=top)]),
-
-    dcc.Graph(id='district-cases', figure=fig, style={'width':'90vw'}),
-    html.Div([dcc.Markdown(children=top)]),
-
-    dcc.Graph(id='district-cases_pt', figure=fig_density, style={'width':'90vw'}),
-    html.Div([dcc.Markdown(children=top)]),    
-
-    html.Div([dcc.Markdown(children=credit)], style=center_text),
-    ])
 
 #app.run_server(debug=True, port=8095)
