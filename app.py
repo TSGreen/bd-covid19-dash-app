@@ -157,7 +157,12 @@ def plot_totalparameter(parameter, colour):
                                    name=parameter,
                                    line=dict(color=colour, width=3),
                                    hovertemplate = hoverform))
-    
+
+plot_totalparameter('Total Tested', 'rgb(49,130,189)')
+plot_totalparameter('Total Cases', 'green')
+plot_totalparameter('Total Recovered', 'rgb(235,186,20)')
+plot_totalparameter('Total Deaths', 'firebrick')
+
 server = app.server
 
 introduction = f'''
@@ -211,7 +216,7 @@ app.layout = html.Div(
             dcc.Tab(
                 label='Regional Data',
                 value='tab-regional', className='custom-tab',
-                selected_className='custom-tab--selected'
+                selected_className='custom-tab--selected', 
             ),
         ]),
     html.Div(id='tabs-content-classes'),
@@ -225,14 +230,12 @@ def render_content(tab):
     if tab == 'tab-daily':
         return html.Div(style={'backgroundColor': colors['background']},
             children=[
-            html.H3('Daily Data'),
             dcc.Graph(id='daily-data-graph', figure=fig_daily, style={'width':'90vw'}),
             html.Div([dcc.Markdown(children=daily_obs)], style=left_text),
         ])
     elif tab == 'tab-total':
         return html.Div(style={'backgroundColor': colors['background']},
             children=[
-            html.H3('Total Data'),
             dcc.RadioItems(
                     id='yaxis-scale',
                     options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
@@ -244,15 +247,14 @@ def render_content(tab):
     elif tab == 'tab-regional':
         return html.Div(style={'backgroundColor': colors['background']},
             children=[
-            html.H3('Regional Data'),
             dcc.Dropdown(id='regional-feature',
                         options=[{'label': i, 'value': j}
                                   for i,j in [('District: Confirmed Cases', 'Log(Cases)'),
                                               ('District: Cases Per Thousand','Cases Per Thousand')]],
                         value='Log(Cases)',
                         searchable=False, clearable=False,
-                        style=center_text),
-            dcc.Graph(id='district-cases', style={'width':'90vw'}),                        
+                        style={'textAlign': 'center', 'color': colors['text'], 'width': '60vw'}),
+            dcc.Graph(id='district-cases', style={'width':'90vw'}),
         ])
 
 #Create and update the cumulative national data plot
@@ -342,4 +344,4 @@ def update_graph(propertytoplot):
     return map_fig
 
 
-#app.run_server(debug=True, port=8095)
+#app.run_server(debug=True, port=8092)
