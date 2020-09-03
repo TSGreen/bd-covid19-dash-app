@@ -48,40 +48,83 @@ app = dash.Dash(__name__,
 
 app.config.suppress_callback_exceptions = True
 
-
 hoverform = "%{y:,.0f}"
+hoverform_percent = "%{y:.1f} %"
 
 latest_update = df.iloc[-1]['Date']
+
+totalcases_regional = int(df_districts_cv19_pop['Total Cases'].sum())
+totalcases_national = int(df['Total Cases'].max())
 
 colors = {'background': '#fafafa',
           'text': '#003366'}
 
 fig_daily = go.Figure()
+fig_daily_percent = go.Figure()
+
+fig_daily_percent.add_trace(go.Bar(x=df['Date'], 
+                           y=df['Positivity rate']*100,
+                           name='Positivity rate',
+                           marker_color='rgb(153, 102, 153)',
+                           hovertemplate=hoverform_percent))
+fig_daily_percent.add_trace(go.Scatter(x=df['Date'],
+                            y=df['Positivity rate SMA7']*100,
+                            name=f'Positivity rate<br>(7-day rolling avg)',
+                            line=dict(color='rgb(153, 102, 153)', width=3),
+                            hovertemplate=hoverform_percent))
+
+fig_daily_percent.update_layout(
+    legend_title_text='<b>Click to hide/show:</b><br>',
+    barmode='overlay',
+    hovermode='x unified',
+    title='Daily Positivity Rate: (percentage of test results which are positive).',
+    xaxis_title='Date',
+    yaxis_title='Percent<br>(%)',
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text'],
+    height=400)
+
+def add_daterange_buttons(figure_object):
+    """Adds date range functionaity to any plot with date on x-axis."""
+    figure_object.update_xaxes(
+            rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1m", step="month", stepmode="backward"),
+                dict(count=2, label="2m", step="month", stepmode="backward"),
+                dict(count=3, label="3m", step="month", stepmode="backward"),
+                dict(count=6, label="6m", step="month", stepmode="backward"),
+                dict(step="all")
+            ])
+        ))
+    
+add_daterange_buttons(fig_daily_percent)
+
 
 def plot_dailyparameter(parameter, colour):
-    
+
     if parameter == 'Daily Tests':
-        columns = ['Newly Tested', 'Daily Tests SMA7'] 
+        columns = ['Newly Tested', 'Daily Tests SMA7']
     elif parameter == 'Daily Cases':
-        columns = ['New Cases', 'Daily Cases SMA7'] 
+        columns = ['New Cases', 'Daily Cases SMA7']
     elif parameter == 'Daily Recoveries':
-        columns = ['Newly Recovered', 'Daily Recoveries SMA7'] 
+        columns = ['Newly Recovered', 'Daily Recoveries SMA7']
     elif parameter == 'Daily Deaths':
-        columns = ['New Deaths', 'Daily Deaths SMA7'] 
-        
-    fig_daily.add_trace(go.Bar(x=df['Date'], 
+        columns = ['New Deaths', 'Daily Deaths SMA7']
+
+    fig_daily.add_trace(go.Bar(x=df['Date'],
                                y=df[columns[0]],
                                name=parameter,
                                marker_color=colour,
-                               hovertemplate = hoverform))
-    
-    fig_daily.add_trace(go.Scatter(x=df['Date'], 
+                               hovertemplate=hoverform))
+
+    fig_daily.add_trace(go.Scatter(x=df['Date'],
                                    y=df[columns[1]],
                                    name=f'{parameter}<br>(7-day rolling avg)',
                                    line=dict(color=colour, width=3),
                                    visible='legendonly',
-                                   hovertemplate = hoverform))
-    
+                                   hovertemplate=hoverform))
+
 
 plot_dailyparameter('Daily Tests', 'rgb(49,130,189)')
 plot_dailyparameter('Daily Cases', 'green')
@@ -97,7 +140,7 @@ fig_daily.update_layout(
     plot_bgcolor=colors['background'],
     paper_bgcolor=colors['background'],
     font_color=colors['text'],
-    height=750,
+    height=700,
     updatemenus=[
         dict(type="buttons",
             direction="left",
@@ -137,16 +180,7 @@ fig_daily.update_layout(
             )
     ])
 
-fig_daily.update_xaxes(
-        rangeselector=dict(
-        buttons=list([
-            dict(count=1, label="1m", step="month", stepmode="backward"),
-            dict(count=2, label="2m", step="month", stepmode="backward"),
-            dict(count=3, label="3m", step="month", stepmode="backward"),
-            dict(count=6, label="6m", step="month", stepmode="backward"),
-            dict(step="all")
-        ])
-    ))
+add_daterange_buttons(fig_daily)
 
 lines = go.Figure()
 
@@ -173,13 +207,32 @@ Data on this page last updated: {latest_update.day} {latest_update.month_name()}
 '''
 
 daily_obs = """
-#### Observations:
-* The number of daily confirmed cases appeared to level out and decrease at the beggining of July, but this very closely maps the decrease in testing at this time, so it most likely to be due to insufficient testing. 
-The rate of testing declined almost immediately after the government annouced on 29 June that a charge would be imposed for COVID tests (which had hiterheto been free at government run facilities).                                                                                     
-* It is encouraging that by late August, despite the number of daily tests levelling out at a slightly higher rate than in July, there is modest decline in number of confirmed daily cases.
-* The daily figures vary with day of the week, with lower numbers reported on weekends and higher numbers mid-week (Tues & Weds).
-* Significant drops in the daily figures were observed around 26 May 2020 and 2 August 2020 because of Eid ul-Fitr and Eid al-Adha respectively.
-* There is a spike in recoveries on 15 June due to a change in  reporting policy. The health ministry included recoveries at home (i.e. outside of hopsitals) from this date. 
+#### Comments:
+* The number of daily confirmed cases appeared to level out and decrease at the 
+beggining of July, but this very closely maps the decrease in testing at this 
+time, so it most likely to be due to insufficient testing. 
+The rate of testing declined almost immediately after the government annouced 
+on 29 June that a charge would be imposed for COVID tests (which had hiterheto 
+been free at government run facilities).                                                                                     
+* It is encouraging that by late August, despite the number of daily tests 
+levelling out at a slightly higher rate than in July, there is modest decline 
+in number of confirmed daily cases.
+* The daily figures vary with day of the week, with lower numbers reported on 
+weekends and higher numbers mid-week (Tues & Weds).
+* Significant drops in the daily figures were observed around 26 May 2020 and 
+2 August 2020 because of Eid ul-Fitr and Eid al-Adha respectively.
+* There is a spike in recoveries on 15 June due to a change in  reporting policy.
+ The health ministry included recoveries at home (i.e. outside of hopsitals) from this date. 
+* The WHO have suggested a positivity rate below 5% is indicative that an outbreak 
+is under control. In Bangladesh the positivity rate remained above 20% from June until late August.  
+"""
+
+regional_obs = f"""
+#### Comments:
+* The regional data is illustrative of the distribution of cases around the country. 
+But, the raw numbers are not complete and therefore not accurate. 
+The sum of all the regional data for example is {totalcases_regional} when the 
+total confirmed cases nationwide are {totalcases_national}.                                                                               
 """
 
 credit = '''
@@ -188,7 +241,7 @@ Page built in Python by [Timothy Green](https://github.com/TSGreen).
 '''
 
 center_text = {'textAlign': 'center', 'color': colors['text']}
-left_text = {'textAlign': 'left', 'color': colors['text']}       
+left_text = {'textAlign': 'left', 'color': colors['text']}
 
 app.layout = html.Div(
     style={'backgroundColor': colors['background']},
@@ -231,6 +284,7 @@ def render_content(tab):
         return html.Div(style={'backgroundColor': colors['background']},
             children=[
             dcc.Graph(id='daily-data-graph', figure=fig_daily, style={'width':'90vw'}),
+            dcc.Graph(id='daily-data-percent', figure=fig_daily_percent, style={'width':'90vw'}),
             html.Div([dcc.Markdown(children=daily_obs)], style=left_text),
         ])
     elif tab == 'tab-total':
@@ -249,12 +303,15 @@ def render_content(tab):
             children=[
             dcc.Dropdown(id='regional-feature',
                         options=[{'label': i, 'value': j}
-                                  for i,j in [('District: Confirmed Cases', 'Log(Cases)'),
-                                              ('District: Cases Per Thousand','Cases Per Thousand')]],
+                                  for i, j in [('District: Confirmed Cases', 'Log(Cases)'),
+                                              ('District: Cases Per Thousand', 'Cases Per Thousand')]],
                         value='Log(Cases)',
                         searchable=False, clearable=False,
-                        style={'textAlign': 'center', 'color': colors['text'], 'width': '60vw'}),
+                        style={'textAlign': 'center', 'color': colors['text'], 
+                               'width': '60vw', 'margin-left': '10vw',
+                              }),
             dcc.Graph(id='district-cases', style={'width':'90vw'}),
+            html.Div([dcc.Markdown(children=regional_obs)], style=left_text),
         ])
 
 #Create and update the cumulative national data plot
@@ -306,17 +363,7 @@ def update_graph(yaxis_type):
                 ]),
             )
         ])
-
-    lines.update_xaxes(
-            rangeselector=dict(
-            buttons=list([
-                dict(count=1, label="1m", step="month", stepmode="backward"),
-                dict(count=2, label="2m", step="month", stepmode="backward"),
-                dict(count=3, label="3m", step="month", stepmode="backward"),
-                dict(count=6, label="6m", step="month", stepmode="backward"),
-                dict(step="all")
-            ])
-        ))
+    add_daterange_buttons(lines)
     lines.update_yaxes(type='linear' if yaxis_type == 'Linear' else 'log') 
     return lines
     
