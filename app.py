@@ -1,7 +1,7 @@
 """
 
-Build Dash app of COVID-19 data in Bangladesh. 
-Includes interactive Plotly visualtions of regional and national data.
+Build Dash app of COVID-19 data in Bangladesh.
+Includes interactive Plotly visualizations of regional and national data.
 
 Reads the processed regional data in a shapefile and the processed national 
 time-series data in a csv.
@@ -209,22 +209,24 @@ Data on this page last updated: {latest_update.day} {latest_update.month_name()}
 daily_obs = """
 #### Comments:
 * The number of daily confirmed cases appeared to level out and decrease at the 
-beggining of July, but this very closely maps the decrease in testing at this 
+beginning of July, but this very closely maps the decrease in testing at this 
 time, so it most likely to be due to insufficient testing. 
-The rate of testing declined almost immediately after the government annouced 
-on 29 June that a charge would be imposed for COVID tests (which had hiterheto 
-been free at government run facilities).                                                                                     
+The rate of testing declined almost immediately after the government announced 
+on 29 June that a charge would be imposed for COVID tests (which had hitherto 
+been free at government run facilities).
 * It is encouraging that by late August, despite the number of daily tests 
-levelling out at a slightly higher rate than in July, there is modest decline 
+leveling out at a slightly higher rate than in July, there is modest decline 
 in number of confirmed daily cases.
 * The daily figures vary with day of the week, with lower numbers reported on 
 weekends and higher numbers mid-week (Tues & Weds).
 * Significant drops in the daily figures were observed around 26 May 2020 and 
 2 August 2020 because of Eid ul-Fitr and Eid al-Adha respectively.
 * There is a spike in recoveries on 15 June due to a change in  reporting policy.
- The health ministry included recoveries at home (i.e. outside of hopsitals) from this date. 
+ The health ministry included recoveries at home (i.e. outside of hospitals) from this date.
 * The WHO have suggested a positivity rate below 5% is indicative that an outbreak 
-is under control. In Bangladesh the positivity rate remained above 20% from June until late August.  
+is under control. In Bangladesh the positivity rate has remained above 5% since
+5 April. It was above 20% from June until mid-August, declining to approximately 12%
+mid-September and has plateaued between 10 and 12% since.
 """
 
 regional_obs = f"""
