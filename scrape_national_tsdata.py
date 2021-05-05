@@ -15,7 +15,8 @@ import pandas as pd
 import requests
 from scrapy import Selector
 
-url = "https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Bangladesh"
+#url = "https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Bangladesh"
+url = "https://en.wikipedia.org/wiki/Statistics_of_the_COVID-19_pandemic_in_Bangladesh"
 
 req = requests.get(url)
 url_content = req.content
