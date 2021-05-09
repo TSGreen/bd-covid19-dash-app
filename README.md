@@ -1,4 +1,4 @@
-# bd-covid19-dash-app
+# Data Dash for Covid-19 Data for Bangladesh
 
 Repo for deploying a data visulation web-app of COVID-19 data in Bangladesh to Heroku. 
 
