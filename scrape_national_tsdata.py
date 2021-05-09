@@ -1,12 +1,11 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
-Scrape the national COVID-19 data from table on Wikipedia (which I help maintain).
+Scrape the national COVID-19 data from Wikipedia table (which I help maintain).
 
-Save two identical files: one dated for archive and one called "latest" for
-processing.
+The script outputs two identical CSV files: 
+    (1) titled by date for archive
+    (2) titled with "latest" for processing for web-app on that day.
 
-@author: tim
+@author: Tim Green
 """
 
 from datetime import date
@@ -15,7 +14,6 @@ import pandas as pd
 import requests
 from scrapy import Selector
 
-#url = "https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Bangladesh"
 url = "https://en.wikipedia.org/wiki/Statistics_of_the_COVID-19_pandemic_in_Bangladesh"
 
 req = requests.get(url)
@@ -26,10 +24,10 @@ df = pd.read_html(data_table.extract_first())[0]
 
 latest_update = df.iloc[-1][0]  # Checks the last date in the table
 
-datedfile = Path.cwd().joinpath('data', 'raw',
-                                f'Wikitable_{latest_update}.csv')
-df.to_csv(datedfile)
+data_filepath = Path.cwd().joinpath('data', 'raw')
 
-latestfile = Path.cwd().joinpath('data', 'raw',
-                                 f'Wikitable_latest.csv')
-df.to_csv(latestfile)
+dated_file = data_filepath.joinpath(f'Wikitable_{latest_update}.csv')
+df.to_csv(dated_file)
+
+latest_file = data_filepath.joinpath(f'Wikitable_latest.csv')
+df.to_csv(latest_file)

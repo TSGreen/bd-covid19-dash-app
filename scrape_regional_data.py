@@ -1,12 +1,11 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
-Scrape the regional COVID-19 data from the online IEDCR Google sheet.
+Scrape the regional COVID-19 data from a Google sheet hosted by IEDCR .
 
-Save two identical files: one dated for archive and one called "latest" for
-processing.
+The script outputs two identical CSV files: 
+    (1) titled by date for archive
+    (2) titled with "latest" for processing for web-app on that day.
 
-@author: tim
+@author: Tim Green
 """
 
 from datetime import date
@@ -23,10 +22,10 @@ sel = Selector(text=url_content)
 data_table = sel.xpath('//table')
 df = pd.read_html(data_table.extract_first())[0]
 
-today = date.today()
+data_filepath = Path.cwd().joinpath('data', 'raw')
 
-datedfile = Path.cwd().joinpath('data', 'raw', f'regional_covid19_data_{today}.csv')
-df.to_csv(datedfile)
+dated_file = data_filepath.joinpath(f'regional_covid19_data_{date.today()}.csv')
+df.to_csv(dated_file)
 
-latestfile = Path.cwd().joinpath('data', 'raw', f'regional_covid19_data_latest.csv')
-df.to_csv(latestfile)
+latest_file = data_filepath.joinpath('regional_covid19_data_latest.csv')
+df.to_csv(latest_file)
