@@ -219,22 +219,26 @@ leveling out at a slightly higher rate than in July, there is modest decline
 in number of confirmed daily cases.
 * The daily figures vary with day of the week, with lower numbers reported on 
 weekends and higher numbers mid-week (Tues & Weds).
-* Significant drops in the daily figures were observed around 26 May 2020 and 
-2 August 2020 because of Eid ul-Fitr and Eid al-Adha respectively.
+* Significant drops in the daily figures were observed around 26 May 2020, 
+2 August 2020 and 14 May 2021 because of the Eid holidays at these times.
 * There is a spike in recoveries on 15 June due to a change in  reporting policy.
  The health ministry included recoveries at home (i.e. outside of hospitals) from this date.
 * The WHO have suggested a positivity rate below 5% is indicative that an outbreak 
-is under control. In Bangladesh the positivity rate has remained above 5% since
-5 April. It was above 20% from June until mid-August, declining to approximately 12%
-mid-September and has plateaued between 10 and 12% since.
+is under control. In Bangladesh the positivity rate remained above 5% from
+5 April 2020 right up until around mid-December 2020. The positivity rate again
+rose to above five per cent in mid-March 2021 where it remains (true as of 28/05/21). 
 """
 
 regional_obs = f"""
 #### Comments:
-* The regional data is illustrative of the distribution of cases around the country. 
-But, the raw numbers are not complete and therefore not accurate. 
-The sum of all the regional data for example is {totalcases_regional} when the 
-total confirmed cases nationwide are {totalcases_national}.                                                                               
+* These numbers are now outdated as their publication was ceased on 15/12/20.
+However, they are still useful as an illustrative distribution of cases around 
+the country.
+It should be noted that during the course of 2020, there was little variation 
+in how cases were geographically spread, and have always, and will likely continue to be,
+concentrated on the large urban areas, in particular Dhaka city.   
+For reference, the sum of all the regional data published as of 15/12/20 was {totalcases_regional}, 
+but the total confirmed cases nationwide now stands at {totalcases_national}.                                                                               
 """
 
 credit = '''
