@@ -360,4 +360,4 @@ def update_graph(propertytoplot):
     return map_fig
 
 
-app.run_server(debug=True, port=8092)
+#app.run_server(debug=True, port=8092)
