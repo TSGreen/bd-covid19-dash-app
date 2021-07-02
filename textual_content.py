@@ -46,7 +46,7 @@ class TextualContent():
         that an outbreak is under control. In Bangladesh the positivity rate 
         remained above 5% from 5 April 2020 right up until around mid-December
         2020. The positivity rate again rose to above five per cent in 
-        mid-March 2021 where it remains (true as of 28/05/21). 
+        mid-March 2021 where it remains (true as of 02/07/21). 
         """
         return text
     
@@ -57,9 +57,8 @@ class TextualContent():
         However, they are still useful as an illustrative distribution of cases around 
         the country.
         It should be noted that during the course of 2020, there was little 
-        variation in how cases were geographically spread, and have always, 
-        and will likely continue to be, concentrated on the large urban areas, 
-        in particular Dhaka city.   
+        variation in how cases were geographically spread  being concentrated
+         on the large urban areas, in particular Dhaka city.   
         * For reader's reference, the sum of all the regional data published 
         as of 15/12/20 was {totalcases_regional}, but the total confirmed cases 
         nationwide now stands at {totalcases_national}.                                                                               
