@@ -11,9 +11,9 @@ import pandas as pd
 df = pd.read_csv('data/processed/national_data.csv',
                  parse_dates=['Date'], index_col='Date')
 
-df['2020-08-01':]['Newly Tested'].fillna(0).astype('int').values
+#df['2020-08-01':]['Newly Tested'].fillna(0).astype('int').values
 
-df['2020-07-10':]['Total Deaths'].fillna(0).astype('int').values
+#df['2020-07-10':]['Total Deaths'].fillna(0).astype('int').values
 
 # Aug-1 , Aug-2 , Aug-3 , Aug-4 , Aug-5 , Aug-6 , Aug-7 ,
 # Aug-8 , Aug-9 , Aug-10 , Aug-11 , Aug-12 , Aug-13 , Aug-14 ,
@@ -27,3 +27,16 @@ df['2020-07-10':]['Total Deaths'].fillna(0).astype('int').values
 # Sept-25 , Sept-26 , Sept-27 , Sept-28 , Sept-29 , Sept-30,
 # Oct-1 , Oct-2 , Oct-3 , Oct-4 , Oct-5 , Oct-6 , Oct-7 
 
+df['positivity'] = df['New Cases'].div(df['Newly Tested']).mul(100)
+
+
+
+df['2020-04-01':].positivity.values
+
+df['2020-04-01':]['Total Cases'].values
+
+df['2020-04-01':]['New Cases'].values
+
+df['2020-04-01':]['Total Recovered'].values
+
+df['2020-04-01':]['Total Deaths'].values
