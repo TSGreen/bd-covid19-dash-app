@@ -40,3 +40,5 @@ df['2020-04-01':]['New Cases'].values
 df['2020-04-01':]['Total Recovered'].values
 
 df['2020-04-01':]['Total Deaths'].values
+
+df['2020-03-18':]['Newly Tested'].values
