@@ -49,13 +49,13 @@ def add_daterange_buttons(figure_object):
 def plot_dailyparameter(parameter, colour):
 
     if parameter == 'Daily Tests':
-        columns = ['Newly Tested', 'Daily Tests SMA7']
+        columns = ['Newly tested', 'Daily Tests SMA7']
     elif parameter == 'Daily Cases':
-        columns = ['New Cases', 'Daily Cases SMA7']
+        columns = ['New cases', 'Daily Cases SMA7']
     elif parameter == 'Daily Recoveries':
-        columns = ['Newly Recovered', 'Daily Recoveries SMA7']
+        columns = ['Newly recovered', 'Daily Recoveries SMA7']
     elif parameter == 'Daily Deaths':
-        columns = ['New Deaths', 'Daily Deaths SMA7']
+        columns = ['New deaths', 'Daily Deaths SMA7']
 
     fig_daily.add_trace(go.Bar(x=df['Date'],
                                y=df[columns[0]],
@@ -102,7 +102,7 @@ hoverform_percent = "%{y:.1f} %"
 latest_update = df.iloc[-1]['Date']
 
 totalcases_regional = int(df_districts_cv19_pop['Total Cases'].sum())
-totalcases_national = int(df['Total Cases'].max())
+totalcases_national = int(df['Total cases'].max())
 
 colors = {'background': '#fafafa',
           'text': '#003366'}
@@ -194,10 +194,10 @@ add_daterange_buttons(fig_daily)
 
 lines = go.Figure()
 
-plot_totalparameter('Total Tested', 'rgb(49,130,189)')
-plot_totalparameter('Total Cases', 'green')
-plot_totalparameter('Total Recovered', 'rgb(235,186,20)')
-plot_totalparameter('Total Deaths', 'firebrick')
+plot_totalparameter('Total tested', 'rgb(49,130,189)')
+plot_totalparameter('Total cases', 'green')
+plot_totalparameter('Total recovered', 'rgb(235,186,20)')
+plot_totalparameter('Total deaths', 'firebrick')
 
 server = app.server
 
