@@ -36,9 +36,9 @@ def clean_data(df, column):
 
 df.drop('Notes', axis=1, inplace=True)
 
-cols = ('Date', 'Total Tested', 'Total Cases', 'Total Deaths',
-       'Total Recovered', 'Newly Tested', 'New Cases', 'New Deaths',
-       'Newly Recovered')
+cols = ('Date', 'Total tested', 'Total cases', 'Total deaths',
+       'Total recovered', 'Newly tested', 'New cases', 'New deaths',
+       'Newly recovered')
 for col in cols:
     df[col] = clean_data(df, col)
 
@@ -51,18 +51,18 @@ eid2 = datetime.strptime('2020-05-28', "%Y-%m-%d")
 
 #df = df.fillna(0)
 
-df['Positivity rate'] = df['New Cases']/df['Newly Tested']
+df['Positivity rate'] = df['New cases']/df['Newly tested']
 df['Positivity rate SMA7'] = df['Positivity rate'].rolling(window=7).mean()
-df['Death case ratio'] = df['Total Deaths']/df['Total Cases']
-df['Cases Normalised'] = df['New Cases']/df['New Cases'].sum()
-df['Tests Normalised'] = df['Newly Tested']/df['Newly Tested'].sum()
-df['Daily Tests SMA3'] = df['Newly Tested'].rolling(window=3).mean()
-df['Daily Cases SMA3'] = df['New Cases'].rolling(window=3).mean()
-df['Daily Deaths SMA3'] = df['New Deaths'].rolling(window=3).mean()
-df['Daily Tests SMA7'] = df['Newly Tested'].rolling(window=7).mean()
-df['Daily Cases SMA7'] = df['New Cases'].rolling(window=7).mean()
-df['Daily Deaths SMA7'] = df['New Deaths'].rolling(window=7).mean()
-df['Daily Recoveries SMA7'] = df['Newly Recovered'].rolling(window=7).mean()
+df['Death case ratio'] = df['Total deaths']/df['Total cases']
+df['Cases Normalised'] = df['New cases']/df['New cases'].sum()
+df['Tests Normalised'] = df['Newly tested']/df['Newly tested'].sum()
+df['Daily Tests SMA3'] = df['Newly tested'].rolling(window=3).mean()
+df['Daily Cases SMA3'] = df['New cases'].rolling(window=3).mean()
+df['Daily Deaths SMA3'] = df['New deaths'].rolling(window=3).mean()
+df['Daily Tests SMA7'] = df['Newly tested'].rolling(window=7).mean()
+df['Daily Cases SMA7'] = df['New cases'].rolling(window=7).mean()
+df['Daily Deaths SMA7'] = df['New deaths'].rolling(window=7).mean()
+df['Daily Recoveries SMA7'] = df['Newly recovered'].rolling(window=7).mean()
 
 
 processed_data = Path.cwd().joinpath('data',
