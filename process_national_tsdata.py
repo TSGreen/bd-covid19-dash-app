@@ -40,7 +40,6 @@ cols = ('Date', 'Total tested', 'Total cases', 'Total deaths',
        'Total recovered', 'Newly tested', 'New cases', 'New deaths',
        'Newly recovered')
 for col in cols:
-	print(col)
 	df[col] = clean_data(df, col)
 
 june = datetime.strptime('2020-06-01', "%Y-%m-%d")
@@ -69,4 +68,4 @@ df['Daily Recoveries SMA7'] = df['Newly recovered'].rolling(window=7).mean()
 processed_data = Path.cwd().joinpath('data',
                                      'processed',
                                      'national_data.csv')
-#df.to_csv(processed_data)
+df.to_csv(processed_data)
