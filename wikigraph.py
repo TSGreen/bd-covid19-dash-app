@@ -27,7 +27,7 @@ df = pd.read_csv('data/processed/national_data.csv',
 # Sept-25 , Sept-26 , Sept-27 , Sept-28 , Sept-29 , Sept-30,
 # Oct-1 , Oct-2 , Oct-3 , Oct-4 , Oct-5 , Oct-6 , Oct-7 
 
-df['positivity'] = df['New Cases'].div(df['Newly Tested']).mul(100)
+df['positivity'] = df['New cases'].div(df['Newly tested']).mul(100)
 
 
 
