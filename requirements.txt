@@ -53,7 +53,7 @@ Scrapy==2.5.1
 service-identity==18.1.0
 Shapely==1.7.0
 six==1.15.0
-Twisted==20.3.0
+Twisted==22.2.0
 urllib3==1.26.5
 w3lib==1.22.0
 Werkzeug==1.0.1
