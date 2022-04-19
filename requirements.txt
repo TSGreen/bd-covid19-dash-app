@@ -32,7 +32,7 @@ jmespath==0.10.0
 lxml==4.6.5
 MarkupSafe==1.1.1
 munch==2.5.0
-numpy==1.19.1
+numpy==1.21.0
 pandas==1.0.5
 parsel==1.6.0
 plotly==4.9.0
